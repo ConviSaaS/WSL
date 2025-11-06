@@ -1,0 +1,44 @@
+name: Export WSL Image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  export-wsl:
+    name: Build and Export WSL Image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Pull Docker image
+        run: |
+          docker pull convisaas/electron-vue-cap-azswa:latest
+
+      - name: Create temporary container
+        run: |
+          docker create --name temp_convisaas convisaas/electron-vue-cap-azswa:latest
+
+      - name: Export container filesystem
+        run: |
+          mkdir -p output
+          docker export temp_convisaas -o output/convisaas-wsl.tar
+
+      - name: Cleanup container
+        run: docker rm temp_convisaas
+
+      - name: Verify exported file
+        run: |
+          ls -lh output/
+          tar -tf output/convisaas-wsl.tar | head -n 20
+
+      - name: Upload as build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: convisaas-wsl-rootfs
+          path: output/convisaas-wsl.tar
+          retention-days: 0
