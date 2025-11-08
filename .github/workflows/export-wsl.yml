@@ -36,6 +36,7 @@ jobs:
         run: |
           ls -lh output/
           tar -tf output/convisaas-wsl.tar | head -n 10
+          gzip -9 output/convisaas-wsl.tar
 
       # Create a GitHub Release and upload the TAR
       - name: Create GitHub Release
@@ -49,6 +50,6 @@ jobs:
             - Build Number: ${{ github.run_number }}
             - Triggered by: ${{ github.actor }}
           files: |
-            output/convisaas-wsl.tar
+            output/convisaas-wsl.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
