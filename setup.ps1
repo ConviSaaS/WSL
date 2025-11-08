@@ -1,9 +1,3 @@
-# Ensure script runs with administrative privileges
-if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-    Write-Host "Please run this script as Administrator." -ForegroundColor Red
-    exit
-}
-
 # Function to install a package via winget
 function Install-PackageIfMissing {
     param (
