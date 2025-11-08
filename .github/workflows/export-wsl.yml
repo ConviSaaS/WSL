@@ -15,7 +15,7 @@ jobs:
 
       # Step 2: Setup Docker
       - name: Setup Docker
-        uses: docker/setup-docker@v4
+        uses: setup-buildx-action@v3
 
       # Step 3: Pull Docker image
       - name: Pull Docker image
